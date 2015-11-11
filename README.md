@@ -1,0 +1,1 @@
+This is a small project I'm running. I want to know how hard it would be for me to click on this block below at least one time a day. I will log the time I click on the block This seems like so easy a job but we will see the results. Everything starts on 11/10/2015. Statistics will be visualized once I have enough data. I shall add more things to log later, but this is a start.
