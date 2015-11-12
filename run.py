@@ -33,7 +33,7 @@ def index():
                 end = getStrTime(now+datetime.timedelta(days=duration))
                 f.write("%s %s\n" % (start,end))
 
-    # fetch task list
+    # fetch task list TODO: defer this work later, just use a button and use ajax
     basedir = 'data/tasks'
     for fn in os.listdir(basedir):
         if fn.endswith('.data'):
@@ -43,6 +43,15 @@ def index():
                 # http://stackoverflow.com/questions/466345/converting-string-into-datetime
                 # $ is the delimiter
                 data['tasks'].append((fn.split('$')[0],start,end))
+
+    # fetch number of clicks TODO:deferWork using ajax
+    totalClicks = 0
+    if (os.path.exists('data/click.data')):
+        with open('data/click.data') as f:
+            for l in f:
+                time, count = l.strip().split(' ')
+                totalClicks += int(count)
+    data['totalClicks'] = totalClicks
     
     return render_template('index.html',**data)
 

@@ -28,11 +28,13 @@
 {% endblock %}
 
 {% block stats %}
+<!-- TODO try to defer work here using ajax -->
+I clicked the box for <span style="color:orange"><strong>{{totalClicks}}</strong></span> times <br/>
 <img id="blueprint" src="static/pictures/blueprint.jpg"></img>
 {% endblock %}
 
-{% block task %}
-<form action="/#task" method="POST">
+{% block tasks %}
+<form action="/#tasks" method="POST">
   I want to <input type="input" name="taskdesc"/>
   this <strong><select name="duration">
       <option value="week">week</option>
@@ -45,7 +47,8 @@
 <div class="text-left">
 Development comment: <br/>
 1. I need to sort the list according to their importance <br/>
-2. Add [delete] and [edit] buttons
+2. Add [delete] and [edit] buttons <br/>
+3. Defer work whenever can, search TODO in run.py and index.html
 </div>
 
 <!-- print tasks -->
