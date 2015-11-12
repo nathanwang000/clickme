@@ -5,7 +5,7 @@ date_to_second           number of click
 2015-11-10-10-17-21      1
 
 tasks/task.data:
-task_name		 From			To
-learn french		 2015-11-10-10-17-21    2015-11-10-10-17-30
+From			 To
+2015-11-10-10-17-21      2015-11-10-10-17-30
 2015-11-10		 1
 2015-11-11		 0

@@ -12,17 +12,19 @@
 {% endblock %}
 
 {% block about %}
-<p>
-  This is a small project I'm running. I want to know how hard it would be for me to click on the red block at least one time a day. I will log the time I click on the block. This task seems so trivial but I just want to encourage myself to keep a habit, maybe a ritual somesort. The logging starts on 11/10/2015. Statistics will be visualized once I have enough data. I shall add more things to log later. Newer features will include:
-  <ul>
-    <li>statistics of my clicking behavior and other tasks</li>
-    <li>ability to add more nontrivial tasks (maybe a daily challenge,weekly challenge?)</li>
-  </ul>
-<p>There will be two kinds of tasks: challenge (I can accept or not) vs. some deadline oriented behavior. This is still in experimental stage, we will see how it will work out.</p>
-<p>
-  Why should I used this in the first place? Well, first I really need to understand my own behavior quantitatively. Second, I want to make bookkeeping my chores automatically (the cost of context switching and managing mind paging fault is great). In other words, I need to spend more mental energy on real tasks instead of worrying about them.
+<div class="text-left">
+  <p>
+    This is a small project I'm running. I want to know how hard it would be for me to click on the red block at least one time a day. I will log the time I click on the block. This task seems so trivial but I just want to encourage myself to keep a habit, maybe a ritual somesort. The logging starts on 11/10/2015. Statistics will be visualized once I have enough data. I shall add more things to log later. Newer features will include:
+    <ul>
+      <li>statistics of my clicking behavior and other tasks</li>
+      <li>ability to add more nontrivial tasks (maybe a daily challenge,weekly challenge?)</li>
+    </ul>
+  <p>There will be two kinds of tasks: challenge (I can accept or not) vs. some deadline oriented behavior. This is still in experimental stage, we will see how it will work out.</p>
+  <p>
+    Why should I used this in the first place? Well, first I really need to understand my own behavior quantitatively. Second, I want to make bookkeeping my chores automatically (the cost of context switching and managing mind paging fault is great). In other words, I need to spend more mental energy on real tasks instead of worrying about them.
+  </p>
 </p>
-</p>
+</div>
 {% endblock %}
 
 {% block stats %}
@@ -39,8 +41,33 @@
       <option value="year">year</option>
   </select></strong>
 </form>
-{% if task %}
-{{task}}
+
+<div class="text-left">
+Development comment: <br/>
+1. I need to sort the list according to their importance <br/>
+2. Add [delete] and [edit] buttons
+</div>
+
+<!-- print tasks -->
+{% if tasks %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="text-center">Task</th>
+      <th class="text-center">Start</th>
+      <th class="text-center">End</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks%}
+    <tr>
+      <td><a href="#">{{task[0]}}</a></td>
+      <td>{{task[1]}}</td>
+      <td>{{task[2]}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endif %}
 {% endblock %}
 

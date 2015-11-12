@@ -1,8 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from collections import defaultdict
-import datetime
-import json
-import re
+import datetime,json,re,os
 
 app = Flask(__name__, template_folder='views', static_folder='static')
 
@@ -16,10 +14,11 @@ lastHour = getStrTime()
 
 @app.route('/',methods=['GET','POST'])
 def index():
-    data = {}
+    data = defaultdict(lambda: None, tasks=[])
+
     if request.method == 'POST':
         # should trim to alphanumeric, TODO
-        task = re.sub(r"\s"," ",request.form.get('taskdesc').strip())
+        task = re.sub(r"[\s\$]"," ",request.form.get('taskdesc').strip())
         duration = {
             'week': 7,
             'day': 1,
@@ -29,14 +28,22 @@ def index():
         if task:
             now = datetime.datetime.now()
             start = getStrTime(now)
-            with open('data/tasks/%s-%s.data' % (task,start),'a') as f:
+            os.system('mkdir -p data/tasks')
+            with open('data/tasks/%s$%s.data' % (task,start),'a') as f:
                 end = getStrTime(now+datetime.timedelta(days=duration))
-                f.write("%s %s %s\n" % (task,start,end))
-        # pass variable to view
-        data['task'] = task
-        data['duration'] = duration
-        print task
-        print 'here'
+                f.write("%s %s\n" % (start,end))
+
+    # fetch task list
+    basedir = 'data/tasks'
+    for fn in os.listdir(basedir):
+        if fn.endswith('.data'):
+            with open(os.path.join(basedir,fn),'r') as f:
+                start,end = f.readline().strip().split(' ')
+                # convert string into datetime TODO
+                # http://stackoverflow.com/questions/466345/converting-string-into-datetime
+                # $ is the delimiter
+                data['tasks'].append((fn.split('$')[0],start,end))
+    
     return render_template('index.html',**data)
 
 @app.route('/click')
