@@ -4,7 +4,8 @@ import datetime,json,re,os
 
 app = Flask(__name__, template_folder='views', static_folder='static')
 
-def getStrTime(time=datetime.datetime.now()):
+def getStrTime(time=None):
+    if not time: time = datetime.datetime.now()
     return '-'.join(map(str,[time.year,time.month,time.day,time.hour,
                              time.minute,time.second]))
 
