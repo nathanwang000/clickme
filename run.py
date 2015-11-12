@@ -11,6 +11,7 @@ def getStrTime(time=datetime.datetime.now()):
 # unsafe for multithread, but since only I use it, ok
 thisHourCount = 0 
 lastHour = getStrTime()
+os.system('mkdir -p data/tasks')
 
 @app.route('/',methods=['GET','POST'])
 def index():
@@ -28,7 +29,6 @@ def index():
         if task:
             now = datetime.datetime.now()
             start = getStrTime(now)
-            os.system('mkdir -p data/tasks')
             with open('data/tasks/%s$%s.data' % (task,start),'a') as f:
                 end = getStrTime(now+datetime.timedelta(days=duration))
                 f.write("%s %s\n" % (start,end))
