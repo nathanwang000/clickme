@@ -1,13 +1,14 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect
 from collections import defaultdict
 import datetime,json,re,os
 
 app = Flask(__name__, template_folder='views', static_folder='static')
 
-def getStrTime(time=None):
+def getStrTime(time=None,upto='second'):
     if not time: time = datetime.datetime.now()
-    return '-'.join(map(str,[time.year,time.month,time.day,time.hour,
-                             time.minute,time.second]))
+    upto = {'year':1, 'month':2, 'day':3, 'hour':4, 'minute':5, 'second':6}[upto]
+    info = [time.year,time.month,time.day,time.hour,time.minute,time.second]
+    return '-'.join(map(str,info[:upto]))
 
 # unsafe for multithread, but since only I use it, ok
 thisHourCount = 0 
@@ -53,13 +54,14 @@ def index():
                 time, count = l.strip().split(' ')
                 totalClicks += int(count)
     data['totalClicks'] = totalClicks
+    data['thishour'] = lastHour
     
     return render_template('index.html',**data)
 
 @app.route('/click')
 def click():
     global thisHourCount, lastHour
-    thisHourCount += 1
+
     thisHour = getStrTime()
     # writeback lastHour and update time
     if lastHour != thisHour:
@@ -68,8 +70,24 @@ def click():
             f.write('%s %s\n' % (lastHour,thisHourCount))
         thisHourCount = 1
         lastHour = thisHour
+    else:
+        thisHourCount += 1
     data = {"nclick": thisHourCount}
     return jsonify(**data)
+
+@app.route('/taskDelete',methods=['GET'])
+def taskDelete():
+    taskid = request.args.get('taskid') # TODO: sanitize this argument
+    os.system('rm ' + os.path.join('data/tasks/', '%s.data'%taskid))
+    return redirect('/#tasks')
+
+@app.route('/taskCheckin',methods=['GET'])
+def taskCheckin():
+    taskid = request.args.get('taskid').strip('\'')
+    with open('data/tasks/%s.data' % taskid,'a') as f:
+        # TODO: fix the logic here so that everyday has only one checkin
+        f.write('%s %s\n' % (getStrTime(upto='day'),1))
+    return redirect('/#tasks')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)

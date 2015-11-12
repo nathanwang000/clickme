@@ -29,7 +29,7 @@
 
 {% block stats %}
 <!-- TODO try to defer work here using ajax -->
-I clicked the box for <span style="color:orange"><strong>{{totalClicks}}</strong></span> times <br/>
+I clicked the box for <span style="color:orange"><strong>{{totalClicks}}</strong></span> times before {{thishour}}<br/>
 <img id="blueprint" src="static/pictures/blueprint.jpg"></img>
 {% endblock %}
 
@@ -48,7 +48,8 @@ I clicked the box for <span style="color:orange"><strong>{{totalClicks}}</strong
 Development comment: <br/>
 1. I need to sort the list according to their importance <br/>
 2. Add [delete] and [edit] buttons <br/>
-3. Defer work whenever can, search TODO in run.py and index.html
+3. Defer work whenever can, search TODO in run.py and index.html <br/>
+4. add the check in option for each task
 </div>
 
 <!-- print tasks -->
@@ -59,6 +60,8 @@ Development comment: <br/>
       <th class="text-center">Task</th>
       <th class="text-center">Start</th>
       <th class="text-center">End</th>
+      <th class="text-center">Delete</th>
+      <th class="text-center">CheckIn</th>
     </tr>
   </thead>
   <tbody>
@@ -67,6 +70,8 @@ Development comment: <br/>
       <td><a href="#">{{task[0]}}</a></td>
       <td>{{task[1]}}</td>
       <td>{{task[2]}}</td>
+      <td><a href="/taskDelete?taskid='{{task[0]+'$'+task[1]}}'">[DELETE]</td>
+      <td><a href="/taskCheckin?taskid='{{task[0]+'$'+task[1]}}'">[CHECKIN]</td>
     </tr>
     {% endfor %}
   </tbody>
