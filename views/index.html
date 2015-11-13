@@ -7,7 +7,7 @@
 
 
 {% block intro %}
-<div id="clickBlock"></div>
+<a href="#tasks" class="page-scroll"><div id="clickBlock"></div></a>
 <p id="thisHourCount"></p>
 {% endblock %}
 
@@ -47,9 +47,10 @@ I clicked the box for <span style="color:orange"><strong>{{totalClicks}}</strong
 <div class="text-left">
 Development comment: <br/>
 1. I need to sort the list according to their importance <br/>
-2. Add [delete] and [edit] buttons <br/>
+2. I need [edit], [delete], [finish], [abort], and [checkin] buttons <br/>
 3. Defer work whenever can, search TODO in run.py and index.html <br/>
-4. add the check in option for each task
+4. add the check in option for each task <br/>
+5. VERY IMPORTANT and Hard: let the network learn the order of tasks by learning a comparator, 2 neuron input 1 neuron output
 </div>
 
 <!-- print tasks -->
@@ -60,7 +61,10 @@ Development comment: <br/>
       <th class="text-center">Task</th>
       <th class="text-center">Start</th>
       <th class="text-center">End</th>
+      <th class="text-center">Edit</th>      
       <th class="text-center">Delete</th>
+      <th class="text-center">Finish</th>
+      <th class="text-center">Abort</th>            
       <th class="text-center">CheckIn</th>
     </tr>
   </thead>
@@ -70,8 +74,35 @@ Development comment: <br/>
       <td><a href="#">{{task[0]}}</a></td>
       <td>{{task[1]}}</td>
       <td>{{task[2]}}</td>
-      <td><a href="/taskDelete?taskid='{{task[0]+'$'+task[1]}}'">[DELETE]</td>
-      <td><a href="/taskCheckin?taskid='{{task[0]+'$'+task[1]}}'">[CHECKIN]</td>
+      <td>[EDIT]</td>
+      <td><a href="/taskDelete?taskid='{{task[0]+'$'+task[1]}}'">[DELETE]</a></td>
+      <td><a href="/taskFinish?taskid='{{task[0]+'$'+task[1]}}">[FINISH]</a></td>
+      <td><a href="/taskAbort?taskid='{{task[0]+'$'+task[1]}}">[ABORT]</a></td>      
+      <td><a href="/taskCheckin?taskid='{{task[0]+'$'+task[1]}}'">[CHECKIN]</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}
+
+{% block archive %}
+This is where completed (either aborted or finished) tasks live
+<br/> Should be able to bring back to life
+<!-- print tasks -->
+{% if archive %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="text-center">Task</th>
+      <th class="text-center">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in archive%}
+    <tr>
+      <td><a href="#">{{task[0]}}</a></td>
+      <td>{{task[1]}}</td>
     </tr>
     {% endfor %}
   </tbody>
